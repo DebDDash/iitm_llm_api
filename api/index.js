@@ -9,6 +9,8 @@ const upload = multer();
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+app.use(express.json());
+
 app.post("/", upload.single("file"), async (req, res) => {
   const { question } = req.body;
 
@@ -28,4 +30,7 @@ app.post("/", upload.single("file"), async (req, res) => {
   }
 });
 
-export default app;
+// ✅ Export the API handler for Vercel
+import { createServer } from "@vercel/node"; // Required for Vercel compatibility
+export default createServer(app);
+
